@@ -1,0 +1,13 @@
+{
+  "welcome": "Добро пожаловать в Web3 Кошелек",
+  "createWallet": "Создать кошелек",
+  "importWallet": "Импортировать кошелек",
+  "balance": "Баланс",
+  "send": "Отправить",
+  "receive": "Получить",
+  "transactionHistory": "История транзакций",
+  "settings": "Настройки",
+  "selectRpc": "Выбор RPC-сервера",
+  "loading": "Загрузка...",
+  "noTransactions": "Нет транзакций"
+}

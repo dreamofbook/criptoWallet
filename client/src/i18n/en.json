@@ -1,0 +1,13 @@
+{
+  "welcome": "Welcome to Web3 Wallet",
+  "createWallet": "Create Wallet",
+  "importWallet": "Import Wallet",
+  "balance": "Balance",
+  "send": "Send",
+  "receive": "Receive",
+  "transactionHistory": "Transaction History",
+  "settings": "Settings",
+  "selectRpc": "Select RPC Endpoint",
+  "loading": "Loading...",
+  "noTransactions": "No transaction"
+}
