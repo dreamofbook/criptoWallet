@@ -1,4 +1,4 @@
-import { Wallet, Mnemonic } from 'ethers';
+import { Wallet } from 'ethers';
 import * as bip39 from 'bip39';
 
 export async function generateWallet(password) {

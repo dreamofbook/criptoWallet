@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import WalletDashboard from '../components/comp/WalletDashBoard/WalletDashBoard.jsx';
 import SettingsPanel from '../components/comp/SettingsPanel/SettingsPanel.jsx';
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import UseValidationSettings from "./UseValidationSettings.jsx";
 
 const UseInput = (initValue, validations) => {
@@ -13,7 +13,7 @@ const UseInput = (initValue, validations) => {
 		sessionStorage.setItem('address', value);
 	}
 
-	const onBlur = (e) => {
+	const onBlur = () => {
 		setIsDirty(true)
 	}
 
