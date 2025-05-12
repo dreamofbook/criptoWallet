@@ -27,7 +27,7 @@ const WalletDashboard = ({ address, rpcUrl }) => {
 				]);
 				setBalance(bal);
 				setPrice(ethPrice);
-				setTransactions(txs.slice(0, 5)); // Показываем последние 5 транзакций
+				setTransactions(txs.slice(0, 20)); // Показываем последние 5 транзакций
 			} catch (err) {
 				console.error(err);
 			} finally {
@@ -38,30 +38,34 @@ const WalletDashboard = ({ address, rpcUrl }) => {
 		loadData();
 	}, [address, rpcUrl]);
 
-	if (loading) return <div>{t('loading') || 'Loading...'}</div>;
+	if (loading) return <div>{t('loading')}</div>;
 
 	return (
-		<div>
-			<h2>{t('balance')}: {balance} ETH</h2>
-			{price && <p>≈ ${(parseFloat(balance) * price).toFixed(2)} USD</p>}
+		<div className={'wallet-dash-board container'}>
+			<div className="glass">
+				{price ? <div className={'balance'}>
+					<h3>{t('balance')}<br/> <span>{balance} ETH</span></h3>
+					<p className={'equal'}>≈ ${(parseFloat(balance) * price).toFixed(2)} USD</p>
+				</div> : null}
 
-			<h3>{t('transactionHistory')}</h3>
-			{transactions.length === 0 ? (
-				<p>{t('noTransactions') || 'No transactions found.'}</p>
-			) : (
-				<ul>
-					{transactions.map(tx => (
-						<Transaction
-							key={tx.id}
-							from={tx.from}
-							to={tx.to}
-							time={tx.timeStamp.toLocaleString()}
-							value={tx.value}
-							error={tx.isError ? '❌' : '✅'}
-						/>
-					))}
-				</ul>
-			)}
+				<h3 className={'transactions'}>{t('transactionHistory')}</h3>
+				{transactions.length === 0 ? (
+					<p>{t('noTransactions') || 'No transactions found.'}</p>
+				) : (
+					<div>
+						{transactions.map((tx, index) =>
+							<Transaction
+								key={index}
+								from={tx.from}
+								to={tx.to}
+								time={tx.timeStamp.toLocaleString()}
+								value={tx.value}
+								errorStatus={tx.isError ? '❌' : '✅'}
+							/>
+						)}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

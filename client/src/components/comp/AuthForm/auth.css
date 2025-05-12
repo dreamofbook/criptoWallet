@@ -1,0 +1,131 @@
+.auth-form{
+    margin-top: 20px;
+}
+
+.auth-form .glass{
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+            inset -0.75px -0.5px rgba(255, 255, 255, 0.1),
+            inset +0.75px +0.5px rgba(255, 255, 255, 0.025),
+            3px 2px 15px rgba(0, 0, 0, 0.25),
+            inset 0 0 10px 5px rgba(255, 255, 255, 0.025),
+            inset 0 0 40px 5px rgba(255, 255, 255, 0.025);
+
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+
+    padding: 30px;
+    justify-items: center;
+}
+
+.auth-form .title{
+    font-family: "SF Pro Display Bold", sans-serif;
+    font-size: 32px;
+    color: #ececec;
+}
+
+.auth-form .types-form{
+    font-family: "SF Pro Display Regular", sans-serif;
+    font-size: 16px;
+    color: #ececec;
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+}
+
+.auth-form .types-form .box-types-form{
+    align-items: center;
+    display: flex;
+    margin: 0 10px
+}
+
+.auth-form .types-form input{
+    margin-right: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+            inset -0.75px -0.5px rgba(255, 255, 255, 0.1),
+            inset +0.75px +0.5px rgba(255, 255, 255, 0.025),
+            inset 3px 2px 15px rgba(0, 0, 0, 0.25),
+            inset 0 0 10px 5px rgba(255, 255, 255, 0.025),
+            inset 0 0 40px 5px rgba(255, 255, 255, 0.025);
+    color: #ececec;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    transition: 0.3s all ease-in-out;
+    appearance: none;
+}
+
+.auth-form .types-form input:checked{
+    border: 3px solid #ea5d3e;
+}
+
+.auth-form .types-form label{
+    font-size: 16px;
+    font-family: "SF Pro Display Regular", sans-serif;
+}
+
+.auth-form form{
+    justify-items: center;
+}
+
+.auth-form form .types-input textarea{
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+            inset -0.75px -0.5px rgba(255, 255, 255, 0.1),
+            inset +0.75px +0.5px rgba(255, 255, 255, 0.025),
+            inset 3px 2px 15px rgba(0, 0, 0, 0.25),
+            inset 0 0 10px 5px rgba(255, 255, 255, 0.025),
+            inset 0 0 40px 5px rgba(255, 255, 255, 0.025);
+    color: #ececec;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 25px;
+    transition: 0.2s all ease-in-out;
+    margin: 3px 0;
+}
+
+.auth-form form .types-input textarea:focus{
+    background: rgba(0, 0, 0, 0.53);
+    outline: none;
+}
+
+.auth-form form .password-form input{
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+            inset -0.75px -0.5px rgba(255, 255, 255, 0.1),
+            inset +0.75px +0.5px rgba(255, 255, 255, 0.025),
+            inset 3px 2px 15px rgba(0, 0, 0, 0.25),
+            inset 0 0 10px 5px rgba(255, 255, 255, 0.025),
+            inset 0 0 40px 5px rgba(255, 255, 255, 0.025);
+    color: #ececec;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 25px;
+    transition: 0.2s all ease-in-out;
+}
+
+.auth-form form .password-form input:focus{
+    background: rgba(0, 0, 0, 0.53);
+}
+
+.auth-form form .submit-btn{
+    margin-top: 10px;
+    background: #ea5d3e;
+    padding: 10px 24px;
+    border-radius: 15px;
+    transition: 0.2s all ease-in-out;
+}
+
+.auth-form form .submit-btn:hover{
+    background: #151515;
+    color: #ececec;
+}

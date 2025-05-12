@@ -15,28 +15,27 @@ const SettingsPanel = ({ onRpcChange, onAddressChange }) => {
 		onRpcChange(value);
 	};
 
-
 	const addressEthereum = UseInput('', {isEmpty: true, isEthError: false});
 
 	return (
-		<div className="settings-panel container">
+		<div className="settings-panel">
 			<div className="glass">
 				<h3>{t('settings')}</h3>
 				<div className="selection-box">
-					<select onChange={(e) => handleRpcChange(e)}>
+					<select value={rpc} onChange={(e) => handleRpcChange(e)}>
 						<option value={'https://mainnet.infura.io/v3/4b2945248a5b4c7298d0323b52ceed8b'}>Infura</option>
-						<option selected>{t('selectRpc')}</option>
+						<option>{t('selectRpc')}</option>
 					</select>
 				</div>
 				<div className="input-box">
 					{addressEthereum.errorMessage && <div className={'error-message'}>{addressEthereum.errorMessage}</div>}
 					<input
 						type={"text"}
-						value={addressEthereum.address}
+						value={addressEthereum.value}
 						onChange={(e) => addressEthereum.onChange(e, onAddressChange)}
 						onBlur={(e) => addressEthereum.onBlur(e)}
 						placeholder="Ethereum address"
-						size={47}
+						size={50}
 					/>
 				</div>
 				<div className="btn-box">

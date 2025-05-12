@@ -10,6 +10,7 @@ export function setRpcUrl(rpcUrl) {
 export async function getBalance(address) {
 	if (!provider) throw new Error("Provider not initialized");
 	const balanceWei = await provider.getBalance(address);
+	console.log(balanceWei);
 	return formatEther(balanceWei);
 }
 

@@ -3,14 +3,14 @@ import UseValidationSettings from "./UseValidationSettings.jsx";
 
 const UseInput = (initValue, validations) => {
 	const [isDirty, setIsDirty] = useState(false);
-	const [address, setAddress] = useState('');
-	const valid = UseValidationSettings(address, validations);
+	const [value, setValue] = useState('');
+	const valid = UseValidationSettings(value, validations);
 
 	const onChange = (e, onAddressChange) => {
-		const value = e.target.value;
-		setAddress(value);
-		onAddressChange(value);
-		sessionStorage.setItem('address', value);
+		const valueInput = e.target.value;
+		setValue(valueInput);
+		if (onAddressChange) onAddressChange(valueInput);
+		sessionStorage.setItem('address', valueInput);
 	}
 
 	const onBlur = () => {
@@ -24,6 +24,10 @@ const UseInput = (initValue, validations) => {
 			errorMessage = 'Это поле не может быть пустым';
 		} else if (valid.isEthError){
 			errorMessage = 'Введите верный адрес ETH-кошелька';
+		} else if (valid.passwordError){
+			errorMessage = 'Длинна пароля должна составлять то 6 символов и должен включать в себя:\nМинимум 1 спец. символ (!@#$%^&*)\nМинимум одну цифру(0-9)\nМинимум одну заглавную букву(A-Z)\nТолько латинские буквы';
+		} else if (valid.bipError){
+			errorMessage = 'Неверная seed-фраза. Проверьте количество слов и порядок.';
 		} else {
 			errorMessage = '';
 		}
@@ -32,7 +36,7 @@ const UseInput = (initValue, validations) => {
 	console.log(valid);
 
 	return {
-		address, onChange, onBlur, isDirty, errorMessage, ...valid
+		value, onChange, onBlur, isDirty, errorMessage, ...valid
 	}
 };
 

@@ -1,5 +1,8 @@
 import { Wallet } from 'ethers';
 import * as bip39 from 'bip39';
+import { Buffer } from "buffer";
+
+window.Buffer = Buffer;
 
 export async function generateWallet(password) {
 	const mnemonic = bip39.generateMnemonic();
