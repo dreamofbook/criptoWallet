@@ -28,5 +28,14 @@
   "signPasswordPlaceholder": "Введите пароль",
   "unlock": "Разблокировать",
   "passwordErrorSign": "Неверный пароль или поврежденные данные",
-  "noSavedWallet": "Нет сохраненного кошелька"
+  "noSavedWallet": "Выберете кошелек",
+  "AuthNav": "Импорт",
+  "SingNav": "Вход",
+  "SettingsNav": "Настройки",
+  "WalletsNav": "Кошельки",
+  "toWallet-btn": "Подробнее",
+  "currency-value": "Курс валюты",
+  "finally-amount": "Стоимость",
+  "balance-value": "Баланс",
+  "wallet-address": "Адрес кошелька"
 }

@@ -33,8 +33,6 @@ const UseInput = (initValue, validations) => {
 		}
 	}
 
-	console.log(valid);
-
 	return {
 		value, onChange, onBlur, isDirty, errorMessage, ...valid
 	}

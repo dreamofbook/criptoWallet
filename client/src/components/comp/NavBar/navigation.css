@@ -1,0 +1,17 @@
+.navigation {
+    width: 40%;
+    z-index: 5;
+    justify-self: center;
+}
+
+.navigation .NavBar{
+    margin-top: 6px;
+    justify-items: center;
+    background: black;
+    display: flex;
+    justify-content: space-evenly;
+    border-radius: 100px;
+    align-items: center;
+    border: 1px solid #333333;
+    padding: 10px 5%;
+}

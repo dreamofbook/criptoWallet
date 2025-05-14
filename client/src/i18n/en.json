@@ -28,5 +28,14 @@
   "signPasswordPlaceholder": "Enter the password",
   "unlock": "Unlock",
   "passwordErrorSign": "Incorrect password or corrupted data",
-  "noSavedWallet": "No saved wallet"
+  "noSavedWallet": "Choose a wallet",
+  "AuthNav": "Import",
+  "SingNav": "Sing in",
+  "SettingsNav": "Settings",
+  "WalletsNav": "Wallets",
+  "toWallet-btn": "Read more",
+  "currency-value": "Currency rate",
+  "finally-amount": "Cost",
+  "balance-value": "Balance",
+  "wallet-address": "Wallet address"
 }

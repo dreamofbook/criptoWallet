@@ -7,9 +7,10 @@ import {
 import UseInput from "../../../customHooks/UseInput.jsx";
 import './auth.css'
 import {useTranslation} from "react-i18next";
+import { saveWalletToDb } from "../../../main-scripts/walletStorage.js";
 
 const WalletAuthForm = ({ onWalletReady }) => {
-	const [mode, setMode] = useState('generate'); // или 'import-mnemonic', 'import-key'
+	const [mode, setMode] = useState('generate');
 	const {t} = useTranslation();
 
 	const handleSubmit = async (e) => {
@@ -26,14 +27,21 @@ const WalletAuthForm = ({ onWalletReady }) => {
 				result = await importWalletFromPrivateKey(privateKey.value.trim(), password.value);
 			}
 
-			localStorage.setItem('wallet', JSON.stringify({
-				address: result.address,
-				encrypted: result.encrypted
-			}));
+			// localStorage.setItem('wallet', JSON.stringify([{
+			// 	address: result.address,
+			// 	encrypted: result.encrypted
+			// 	},{
+			//
+			// }
+			// ]));
+			//
+			// onWalletReady(result.address);
+
+			await saveWalletToDb(result.address, result.encrypted, true);
 
 			onWalletReady(result.address);
+			alert(`Кошелёк добавлен: ${result.address}`);
 
-			alert(`Кошелёк готов! Адрес: ${result.address}`);
 		} catch (err) {
 			console.error(err);
 		}

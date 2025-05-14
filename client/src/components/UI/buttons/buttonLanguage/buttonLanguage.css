@@ -1,8 +1,9 @@
 .buttonLanguage{
+    height: 40px;
     font-size: 20px;
     padding: 5px 20px;
     margin: 5px 1px;
-    background-color: #ea5d3e;
-    border: none;
+    background-color: #000000;
+    border: 1px solid #535353;
     border-radius: 15px;
 }

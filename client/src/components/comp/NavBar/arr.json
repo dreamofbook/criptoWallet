@@ -1,0 +1,17 @@
+[
+  {
+    "title": "AuthNav",
+    "id": 1,
+    "path": "/auth-form"
+  },
+  {
+    "title": "SingNav",
+    "id": 1,
+    "path": "/sign-form"
+  },
+  {
+    "title": "WalletsNav",
+    "id": 1,
+    "path": "/wallets"
+  }
+]

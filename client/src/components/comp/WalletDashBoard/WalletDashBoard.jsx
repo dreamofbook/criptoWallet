@@ -27,7 +27,7 @@ const WalletDashboard = ({ address, rpcUrl }) => {
 				]);
 				setBalance(bal);
 				setPrice(ethPrice);
-				setTransactions(txs.slice(0, 20)); // Показываем последние 5 транзакций
+				setTransactions(txs.slice(0, 20));
 			} catch (err) {
 				console.error(err);
 			} finally {

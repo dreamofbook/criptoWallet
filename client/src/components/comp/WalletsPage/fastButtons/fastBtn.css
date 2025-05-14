@@ -1,0 +1,50 @@
+.fast-buttons{
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 21%;
+}
+
+.fast-buttons .btn{
+    width: 100%;
+    height: calc(calc(100% - 40px) / 3);
+    background: rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+            inset -0.75px -0.5px rgba(255, 255, 255, 0.1),
+            inset +0.75px +0.5px rgba(255, 255, 255, 0.025),
+            inset 3px 2px 15px rgba(0, 0, 0, 0.25),
+            inset 0 0 10px 5px rgba(255, 255, 255, 0.025),
+            inset 0 0 40px 5px rgba(255, 255, 255, 0.025);
+    color: #ececec;
+    border: none;
+    border-radius: 20px;
+    transition: 0.2s all ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.fast-buttons .btn:hover{
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.53);
+}
+
+.fast-buttons .btn img{
+    margin: 20px 10px 20px 20px;
+}
+
+.fast-buttons .btn a{
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-size: 16px;
+    color: #ececec;
+    width: 100%;
+    margin-right: 20px;
+}
+
+.fast-buttons .btn a{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

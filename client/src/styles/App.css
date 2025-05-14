@@ -10,10 +10,3 @@
     left: 0;
     z-index: -100;
 }
-
-.app .import-plz{
-    width: max-content;
-    font-family: "SF Pro Display Bold", sans-serif !important;
-    color: #f64545;
-    font-size: 28px;
-}

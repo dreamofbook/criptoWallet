@@ -1,0 +1,12 @@
+.menu{
+    transition: 0.3s all ease-in-out;
+    font-family: 'Roboto Thin', sans-serif;
+    color: #ececec;
+    text-decoration: none;
+    padding: 10px 5%;
+    justify-items: center;
+}
+
+.menu:hover{
+    color: #ea8d78;
+}
