@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { JsonRpcProvider, formatEther } from 'ethers';
-import './wallet.css';
+import './wallet-mini.css';
 import {Link} from "react-router";
 import {useTranslation} from "react-i18next";
 import copyBtn from '../../../../assets/image/copyButton.svg'
 import FastButtons from "../fastButtons/FastButtons.jsx";
 
-const Wallet = ({ address, rpcUrl, currency }) => {
+const WalletMini = ({ address, rpcUrl, currency }) => {
 	const {t} = useTranslation();
 	const [ethBalance, setEthBalance] = useState(null);
 	const [exchangeRate, setExchangeRate] = useState(null);
@@ -60,7 +60,7 @@ const Wallet = ({ address, rpcUrl, currency }) => {
 						</div>
 					</div>
 					<div className="btnLink">
-						<Link to={''}>
+						<Link to={`/wallets/${address}`}>
 							<div className="toWallet-btn">
 								{t("toWallet-btn")}
 							</div>
@@ -68,9 +68,9 @@ const Wallet = ({ address, rpcUrl, currency }) => {
 					</div>
 				</div>
 			</div>
-			<FastButtons/>
+			<FastButtons address={address} isMini={true}/>
 		</div>
 	);
 };
 
-export default Wallet;
+export default WalletMini;

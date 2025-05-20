@@ -2,7 +2,7 @@
     margin-top: 40px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
 }
 
@@ -38,7 +38,6 @@
     width: 95%;
     height: 100%;
     text-align: center;
-    /*background-image: url("/Users/redich/WebstormProjects/пиздец/client/src/assets/image/right-chevron_1633719.png");*/
 }
 
 .wallets-box .currency-selector select:hover,
@@ -47,6 +46,13 @@
     outline: none;
 }
 
+.wallets-error{
+    margin-top: 50px;
+    font-family: "SF Pro Display Bold", sans-serif;
+    font-size: 36px;
+    color: #ececec;
+}
 
-
-
+.wallets-error a{
+    color: #ea5d3e;
+}

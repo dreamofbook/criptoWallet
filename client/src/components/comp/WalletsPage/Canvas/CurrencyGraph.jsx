@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
+import './canvas.css'
 import {
 	Chart as ChartJS,
 	LineElement,
@@ -29,9 +30,7 @@ const CurrencyGraph = () => {
 
 	const fetchData = async () => {
 		try {
-			const res = await fetch(
-				'https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=10m&limit=288'
-			);
+			const res = await fetch('http://localhost:3001/api/eth-chart');
 
 			if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -51,7 +50,7 @@ const CurrencyGraph = () => {
 					borderWidth: 3,
 					backgroundColor: 'rgba(51,111,243,0.29)',
 					tension: 0.2,
-					pointRadius: 0
+					pointRadius: 1
 				}]
 			});
 
@@ -77,27 +76,60 @@ const CurrencyGraph = () => {
 				data={chartData}
 				options={{
 					responsive: true,
+					interaction: {
+						mode: 'index',
+						intersect: false
+					},
 					plugins: {
 						legend: { display: false },
-						tooltip: { enabled: true }
+						tooltip: {
+							animation: {
+								duration: 10,
+								easing: 'linear'
+							},
+							enabled: true,
+							mode: 'index',
+							intersect: false,
+							backgroundColor: '#1e1e1e',
+							titleFont: { size: 13, weight: 'bold' },
+							bodyFont: { size: 12 },
+							padding: 10,
+							displayColors: false,
+							cornerRadius: 6,
+							callbacks: {
+								title: (items) => {
+									const date = new Date(items[0].parsed.x);
+									return date.toLocaleString('ru-RU', {
+										hour: '2-digit',
+										minute: '2-digit',
+										day: '2-digit',
+										month: 'short'
+									});
+								},
+								label: (context) => `Цена: $${context.parsed.y.toFixed(2)}`
+							}
+						}
+					},
+					animations: {
+						tooltip: {
+							duration: 100,
+							easing: 'easeOutCubic'
+						}
 					},
 					scales: {
 						x: {
 							type: 'time',
 							time: { unit: 'hour' },
-							ticks: { maxTicksLimit: 96 }
+							ticks: { maxTicksLimit: 24 }
 						},
 						y: {
 							display: true,
-							title: { display: true, text: 'Цена, USDT' },
-							ticks: {
-								callback: value => `$${value}`
-							}
+							title: { display: false }
 						}
 					}
 				}}
 				height={500}
-				width={500}
+				width={400}
 			/>
 		</div>
 	);

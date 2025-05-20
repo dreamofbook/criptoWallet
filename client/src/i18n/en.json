@@ -37,5 +37,12 @@
   "currency-value": "Currency rate",
   "finally-amount": "Cost",
   "balance-value": "Balance",
-  "wallet-address": "Wallet address"
+  "wallet-address": "Wallet address",
+  "wallets-error-import": " create ",
+  "warning": "Are you sure you want to delete?",
+  "warning-description": "This action cannot be cancelled",
+  "delete-cancel-modal": "Cancel",
+  "delete-wallet-modal": "Delete anyway",
+  "to-transaction-active": "Show transaction",
+  "to-transaction-noneActive": "Hide transaction"
 }

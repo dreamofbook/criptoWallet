@@ -38,7 +38,7 @@ const WalletLogin = ({ address, onWalletReady}) => {
 		<div className={"singForm"}>
 			<div className="glass">
 				<h2 className={'title'}>{t('signWalletTitle')}</h2>
-				<form onSubmit={handleUnlock}>
+				<form onSubmit={(e) => handleUnlock(e)}>
 					{error && <div className={'error-message'}>{error}</div>}
 					<input
 						className={'password-form glassInput'}

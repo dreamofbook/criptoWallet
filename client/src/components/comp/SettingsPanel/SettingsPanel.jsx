@@ -53,7 +53,7 @@ const SettingsPanel = ({ onRpcChange, onAddressChange }) => {
 					<div className="settings-active">
 						<div className="glass">
 							<h3>{t('settings')}</h3>
-							<WalletSelector onAddressChange={onAddressChange}/>
+							{/*<WalletSelector onAddressChange={onAddressChange}/>*/}
 							<div className="selection-box">
 								<select value={rpc} onChange={(e) => handleRpcChange(e)}>
 									<option value={'https://mainnet.infura.io/v3/4b2945248a5b4c7298d0323b52ceed8b'}>Infura</option>

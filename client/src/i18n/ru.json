@@ -37,5 +37,12 @@
   "currency-value": "Курс валюты",
   "finally-amount": "Стоимость",
   "balance-value": "Баланс",
-  "wallet-address": "Адрес кошелька"
+  "wallet-address": "Адрес кошелька",
+  "wallets-error": "Импортируйте или создайте кошелек",
+  "warning": "Уверены, что хотите удалить?",
+  "warning-description": "Это действие нельзя будет отменить",
+  "delete-cancel-modal": "Отменить",
+  "delete-wallet-modal": "Все равно удалить",
+  "to-transaction-active": "Показать транзакции",
+  "to-transaction-noneActive": "Скрыть транзакции"
 }

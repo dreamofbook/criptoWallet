@@ -5,6 +5,7 @@
     transition: all 0.2s ease-in-out;
     border-radius: 30px;
     margin-top: 20px;
+    z-index: 1000;
 }
 
 .settings-active .glass {
