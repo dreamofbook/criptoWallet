@@ -5,8 +5,9 @@ import WalletMini from './Wallet/Wallet-mini.jsx'
 import CurrencyGraph from "./Canvas/CurrencyGraph.jsx";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router";
+import UseEthData from '../../../../customHooks/UseEthData.jsx'
 
-const CURRENCY_OPTIONS = ['USD', 'EUR', 'RUB', 'KZT', 'CNY'];
+const CURRENCY_OPTIONS = ['USD', 'EUR'];
 
 const Wallets = ({rpcUrl}) => {
 	const {t} = useTranslation();
@@ -14,15 +15,15 @@ const Wallets = ({rpcUrl}) => {
 	const [currency, setCurrency] = useState("USD");
 
 	useEffect(() => {
+		const loadWallets = async () => {
+			const all = await getAllWallets();
+			setWallets(all);
+		};
+
 		loadWallets();
 	}, []);
 
-	const loadWallets = async () => {
-		const all = await getAllWallets();
-		setWallets(all);
-	};
-
-
+	const { chart, price: exchangeRate, loading, error } = UseEthData(currency);
 
 	return (
 		<>
@@ -42,11 +43,15 @@ const Wallets = ({rpcUrl}) => {
 								address={wallet['address']}
 								currency={currency}
 								rpcUrl={rpcUrl}
+								exchangeRate={exchangeRate}
 							/>
 						)}
 					</div>
 					<div className="canvasCard">
-						<CurrencyGraph currency={currency} />
+						{loading && <p>Загрузка графика...</p>}
+						{error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
+						{!loading && !error && <CurrencyGraph chartData={chart} />}
+						{/*<CurrencyGraph currency={currency} data={chart} />*/}
 					</div>
 				</div>
 			) : (

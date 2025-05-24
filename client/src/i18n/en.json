@@ -46,5 +46,9 @@
   "delete-wallet-modal": "Delete anyway",
   "to-transaction-active": "Show transaction",
   "to-transaction-noneActive": "Hide transaction",
-  "loading-transactionFALSE": "Loading..."
+  "loading-transactionFALSE": "Loading...",
+  "sendToPlaceholder": "Enter the ETH address of the recipient",
+  "balanceErrorToMuch": "Insufficient funds",
+  "balanceErrorNull": "Unable to send 0 ETH",
+  "SendError": "Transaction sending error"
 }

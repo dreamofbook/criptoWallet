@@ -8,22 +8,9 @@ import FastButtons from "../fastButtons/FastButtons.jsx";
 import SendForm from "../../FullPage/Froms/SendForm.jsx";
 
 
-const WalletMini = ({ address, rpcUrl, currency }) => {
+const WalletMini = ({ address, rpcUrl, currency, exchangeRate }) => {
 	const {t} = useTranslation();
 	const [ethBalance, setEthBalance] = useState(null);
-	const [exchangeRate, setExchangeRate] = useState(null);
-
-	const fetchData = async () => {
-		try {
-			const res = await fetch('http://localhost:3001/api/eth-price');
-			const { price } = await res.json();
-
-			console.log('ETH price from Binance:', price);
-
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	useEffect(() => {
 		if (!address || !rpcUrl) return;
@@ -33,20 +20,11 @@ const WalletMini = ({ address, rpcUrl, currency }) => {
 		});
 	}, [address, rpcUrl]);
 
-	useEffect(() => {
-		if (!currency) return;
-		fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${currency.toLowerCase()}`)
-			.then(res => res.json())
-			.then(data => setExchangeRate(data.ethereum[currency.toLowerCase()]))
-			.catch(err => console.error('Ошибка получения курса', err));
-	}, [currency]);
-
 	const fiatValue = ethBalance && exchangeRate
 		? (ethBalance * exchangeRate).toFixed(2)
 		: '...';
 
 	const copy = (address) => {
-		// const copyText = document.querySelector('.wallet .glass .address-box code')
 		window.navigator.clipboard.writeText(address);
 	}
 
@@ -74,11 +52,11 @@ const WalletMini = ({ address, rpcUrl, currency }) => {
 						</div>
 					</div>
 					<div className="btnLink">
-						{/*<Link to={`/wallets/fullpage/${address}`}>*/}
-						{/*	<div className="toWallet-btn">*/}
-						{/*		{t("toWallet-btn")}*/}
-						{/*	</div>*/}
-						{/*</Link>*/}
+						<Link to={`/wallets/fullpage/${address}`}>
+							<div className="toWallet-btn">
+								{t("toWallet-btn")}
+							</div>
+						</Link>
 					</div>
 				</div>
 			</div>

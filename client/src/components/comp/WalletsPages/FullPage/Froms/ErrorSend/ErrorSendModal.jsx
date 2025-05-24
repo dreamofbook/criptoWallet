@@ -1,33 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Modal from "react-modal";
-import './deleteModal.css'
+import './errorSendModal.css'
 import {useTranslation} from "react-i18next";
-import {deleteWalletFromDb} from "../../../../../../main-scripts/walletStorage.js";
 
-const DeleteModal = ({modalIsOpen, setModalIsOpen, setDeleteFinally}) => {
+const ErrorSendModal = ({error, setError, modalIsOpen, setModalIsOpen}) => {
 
 	const {t} = useTranslation();
 	function closeModal() {
 		setModalIsOpen(false);
-	}
-
-	function deleteFromModal() {
-		closeModal();
-		setDeleteFinally(true);
+		setError('');
 	}
 
 	function openModal() {
 		setModalIsOpen(true);
 	}
 
-
-
 	return (
-		<div className="deleteModal">
+		<div className="error-send-modal">
 			<Modal
 				isOpen={modalIsOpen}
 				onRequestClose={closeModal}
-				className={"delete-modal"}
+				className={"error-modal"}
 				style={{
 					overlay: {
 						position: "fixed",
@@ -55,20 +48,17 @@ const DeleteModal = ({modalIsOpen, setModalIsOpen, setDeleteFinally}) => {
 				}}
 			>
 				<div className="inside-modal">
-					<div className={'delete-modal-warning'}>
-						{t('warning')}
+					<div className={'send-modal-warning'}>
+						{t('SendError')}
 					</div>
-					<div className={'delete-modal-body'}>
-						{t('warning-description')}
+					<div className="error-message">
+						{error}
 					</div>
-					<div className="delete-modal-buttons">
-						<button className="cancel"
-						onClick={() => closeModal}>
+					<div className="close-btn">
+						<button
+							onClick={() => closeModal()}
+						>
 							{t('delete-cancel-modal')}
-						</button>
-						<button className="delete"
-						onClick={() => deleteFromModal()}>
-							{t('delete-wallet-modal')}
 						</button>
 					</div>
 				</div>
@@ -77,4 +67,4 @@ const DeleteModal = ({modalIsOpen, setModalIsOpen, setDeleteFinally}) => {
 	);
 };
 
-export default DeleteModal;
+export default ErrorSendModal;

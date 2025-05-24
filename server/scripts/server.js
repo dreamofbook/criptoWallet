@@ -8,53 +8,82 @@ const PORT = 3001;
 
 app.use(cors());
 
-app.get('/api/eth-chart', async (req, res) => {
-	try {
-		const binanceURL = 'https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=5m&limit=288';
-		const response = await fetch(binanceURL);
 
-		if (!response.ok) {
-			return res.status(response.status).json({ error: 'Binance API error' });
-		}
+// ===========================
+// 🚀 Новый маршрут: /api/eth-full
+// ===========================
 
-		const data = await response.json();
-		res.json(data);
-	} catch (err) {
-		console.error('Proxy error (eth-chart):', err);
-		res.status(500).json({ error: 'Proxy server failed' });
+const supportedSymbols = {
+	usd: 'ETHUSDT',
+	eur: 'ETHEUR',
+	rub: 'ETHRUB',
+	kzt: 'ETHKZT'
+};
+
+let cachedFullDataByCurrency = {};
+let lastFetchByCurrency = {};
+
+app.get('/api/eth-full', async (req, res) => {
+
+	const currency = (req.query.currency || 'usd').toLowerCase();
+	const symbol = supportedSymbols[currency];
+
+	if (!symbol) {
+		return res.status(400).json({ error: `Unsupported currency: ${currency}` });
 	}
-});
 
-let cachedPrice = null;
-let lastFetchTime = 0;
-
-app.get('/api/eth-price', async (req, res) => {
 	const now = Date.now();
-	const cacheTTL = 60 * 1000; // 1 минута
+	const cacheTTL = 60 * 1000; // 1 минутф кэш
 
-	if (cachedPrice && now - lastFetchTime < cacheTTL) {
-		return res.json(cachedPrice);
+	if (cachedFullDataByCurrency[currency] &&
+		now - lastFetchByCurrency[currency] < cacheTTL) {
+		return res.json(cachedFullDataByCurrency[currency]);
 	}
 
 	try {
-		const cgUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd,eur,gbp,rub';
-		const response = await fetch(cgUrl);
+		// 1. Получаем график
+		const klineRes = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=5m&limit=288`);
+		if (!klineRes.ok) throw new Error('Failed to fetch klines');
+		const klineData = await klineRes.json();
 
-		if (!response.ok) {
-			return res.status(response.status).json({ error: 'CoinGecko error' });
-		}
+		const chart = klineData.map(kline => ({
+			x: kline[0], // timestamp (open time)
+			y: parseFloat(kline[4]) // close price
+		}));
 
-		const data = await response.json();
-		cachedPrice = data;
-		lastFetchTime = now;
+		// 2. Получаем текущую цену
+		const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`);
+		if (!tickerRes.ok) throw new Error('Failed to fetch ticker');
+		const tickerData = await tickerRes.json();
+		const lastPrice = parseFloat(tickerData.price);
 
-		res.json(data);
+		// 3. Добавляем финальную точку
+		chart.push({
+			x: Date.now(),
+			y: lastPrice
+		});
+
+		const result = {
+			// symbol: 'ETHUSDT',
+			// lastPrice,
+			// chart
+			symbol,
+			currency,
+			lastPrice,
+			chart
+		};
+
+		cachedFullDataByCurrency[currency] = result;
+		lastFetchByCurrency[currency] = now;
+
+		res.json(result);
 	} catch (err) {
-		console.error('Proxy error (eth-price):', err);
-		res.status(500).json({ error: 'Failed to fetch ETH price' });
+		console.error('❌ /api/eth-full error:', err.message);
+		res.status(500).json({ error: 'Failed to fetch full ETH data' });
 	}
 });
+
 
 app.listen(PORT, () => {
-	console.log(`🚀 Proxy server is running at http://localhost:${PORT}`);
+	console.log(`🚀 Proxy server running at http://localhost:${PORT}`);
 });

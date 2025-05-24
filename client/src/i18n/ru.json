@@ -46,5 +46,9 @@
   "delete-wallet-modal": "Все равно удалить",
   "to-transaction-active": "Показать транзакции",
   "to-transaction-noneActive": "Скрыть транзакции",
-  "loading-transactionFALSE": "Загрузка..."
+  "loading-transactionFALSE": "Загрузка...",
+  "sendToPlaceholder": "Введите ETH адрес получателя",
+  "balanceErrorToMuch": "Недостаточно средств",
+  "balanceErrorNull": "Невозможно отправить 0 ETH",
+  "SendError": "Ошибка отправки транзакции"
 }

@@ -6,23 +6,27 @@ import './fullWallet.css'
 import TransactionDetails from "./transactions/TransactionDetails.jsx";
 import {getTransactionHistory, setRpcUrl} from "../../../../main-scripts/balanceService.js";
 import SendForm from "./Froms/SendForm.jsx";
+import UseEthData from "../../../../customHooks/UseEthData.jsx";
 
 const ETHERSCAN_API_KEY = 'DIXCF84GWNNBXIWUI33HFBCET1KXC3REH3';
-const CURRENCY_OPTIONS = ['USD', 'EUR', 'RUB', 'KZT', 'CNY'];
+const CURRENCY_OPTIONS = ['USD', 'EUR', 'RUB', 'KZT'];
 
 const FullWalletPage = ({address, rpcUrl}) => {
 
 	const {t} = useTranslation();
 	const [ethBalance, setEthBalance] = useState(null);
-	const [exchangeRate, setExchangeRate] = useState(null);
+	// const [exchangeRate, setExchangeRate] = useState(null);
 	const [currency, setCurrency] = useState("USD");
 	const [transactionActive, setTransactionActive] = useState(false);
 
 	const [transactions, setTransactions] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [loadingTransactions, setLoadingTransactions] = useState(false);
+
+	const {price: exchangeRate} = UseEthData();
+
 	React.useEffect( () => {
 		async function loadData() {
-			setLoading(true);
+			setLoadingTransactions(true);
 			try {
 				setRpcUrl(rpcUrl);
 				const txs = await Promise.all([
@@ -32,7 +36,7 @@ const FullWalletPage = ({address, rpcUrl}) => {
 			} catch (err) {
 				console.error(err);
 			} finally {
-				setLoading(false);
+				setLoadingTransactions(false);
 			}
 		}
 
@@ -47,14 +51,6 @@ const FullWalletPage = ({address, rpcUrl}) => {
 			setEthBalance(parseFloat(formatEther(balance)));
 		});
 	}, [address, rpcUrl]);
-
-	useEffect(() => {
-		if (!currency) return;
-		fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${currency.toLowerCase()}`)
-			.then(res => res.json())
-			.then(data => setExchangeRate(data.ethereum[currency.toLowerCase()]))
-			.catch(err => console.error('Ошибка получения курса', err));
-	}, [currency]);
 
 	const fiatValue = ethBalance && exchangeRate
 		? (ethBalance * exchangeRate).toFixed(2)
@@ -95,7 +91,7 @@ const FullWalletPage = ({address, rpcUrl}) => {
 					</div>
 				</div>
 			</div>
-			<SendForm address={address} currency={currency} />
+			<SendForm address={address} currency={currency} ethBalance={ethBalance} exchangeRate={exchangeRate}/>
 			<div className="tran-sel">
 				<button
 					className="transaction-select"
@@ -114,7 +110,7 @@ const FullWalletPage = ({address, rpcUrl}) => {
 			<div className="transactions-active">
 				{transactionActive? (
 					<div>
-						{loading? (
+						{loadingTransactions? (
 							<div className="error-message">
 								{t('loading-transactionFALSE')}
 							</div>

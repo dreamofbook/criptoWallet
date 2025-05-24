@@ -42,11 +42,9 @@ const SettingsPanel = ({ onRpcChange, wallets }) => {
 
 	},[activeSettings]);
 
-	React.useEffect(() => {
-		navigate(`/wallets/fullpage/${address}`);
-	}, [address])
-
 	const location = useLocation();
+
+
 
 	return (
 		<>
@@ -68,9 +66,10 @@ const SettingsPanel = ({ onRpcChange, wallets }) => {
 							</div>
 							{location.pathname.slice(0,17) === '/wallets/fullpage' && (
 								<div className="select-address">
-									<select onChange={(e) =>
-										setAddress(e.target.value)
-									}>
+									<select onChange={(e) =>{
+										setAddress(e.target.value);
+										navigate(`/wallets/fullpage/${e.target.value}`);
+									}}>
 										{wallets.map((wallet, index) =>
 											<option key={index} value={wallet}>{wallet}</option>
 										)}

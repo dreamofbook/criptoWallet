@@ -11,12 +11,13 @@ const RoutingComp = () => {
 	const [rpcUrl, setRpcUrl] = useState(sessionStorage.getItem('rpcUrl') || '');
 
 	const wall = UseWallets();
+	const basename = import.meta.env.MODE === 'development' ? '/' : '/redich.ru';
 
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename={basename}>
 			<Routes>
 				<Route path="/" element={<MainPage onRpcChange={setRpcUrl} wallets={wall.wallets} />}>
-					<Route path={"/auth-form"} element={<WalletAuthForm/>}/>
+					<Route index element={<WalletAuthForm/>}/>
 					<Route path={'/wallets'} element={<Wallets rpcUrl={rpcUrl}/>}/>
 					{wall.walletsLoaded && (
 						wall.wallets.map((address, index) =>
@@ -26,7 +27,7 @@ const RoutingComp = () => {
 							element={<FullWalletPage address={address} rpcUrl={rpcUrl}/>}
 						/>)
 					)}
-					<Route path={"/*"} element={<WalletAuthForm />}/>
+					<Route path={"*"} element={<WalletAuthForm />}/>
 				</Route>
 			</Routes>
 		</BrowserRouter>

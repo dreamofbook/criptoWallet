@@ -43,7 +43,8 @@
     transition: 0.2s all ease-in-out;
 }
 
-.delete-modal .inside-modal .delete-modal-buttons .cancel:hover, .delete-modal .inside-modal .delete-modal-buttons .cancel:active{
+.delete-modal .inside-modal .delete-modal-buttons .cancel:hover,
+.delete-modal .inside-modal .delete-modal-buttons .cancel:active{
     background: rgba(0, 0, 0, 0.1) !important;
 }
 

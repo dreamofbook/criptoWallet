@@ -45,11 +45,11 @@ const UseValidationSettings = (value, validations) => {
 
 	React.useEffect(() => {
 		if (isEmpty || isEthError || passwordError || bipError || privateKeyError) {
-			setIsInputValid(true);
-		} else {
 			setIsInputValid(false);
+		} else {
+			setIsInputValid(true);
 		}
-	}, [isEmpty, isEthError]);
+	}, [isEmpty, isEthError, passwordError, bipError, privateKeyError]);
 
 
 	return {
