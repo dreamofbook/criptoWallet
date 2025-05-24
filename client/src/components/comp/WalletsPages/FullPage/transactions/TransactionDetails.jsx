@@ -1,8 +1,8 @@
 import React from 'react';
-import '../WalletsPages/FullPage/transactions/transaction.css'
+import './transaction.css'
 import {useTranslation} from "react-i18next";
 
-const Transaction = ({from, to, time, value, errorStatus}) => {
+const TransactionDetails = ({from, to, time, value, errorStatus}) => {
 	const {t} = useTranslation();
 
 	return (
@@ -32,4 +32,4 @@ const Transaction = ({from, to, time, value, errorStatus}) => {
 	);
 };
 
-export default Transaction;
+export default TransactionDetails;

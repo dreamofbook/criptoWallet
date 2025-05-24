@@ -26,6 +26,7 @@
   "privateKeyRadio": "Import private-key",
   "signWalletTitle": "Wallet login",
   "signPasswordPlaceholder": "Enter the password",
+  "signAddressPlaceholder": "Enter the ETH address",
   "unlock": "Unlock",
   "passwordErrorSign": "Incorrect password or corrupted data",
   "noSavedWallet": "Choose a wallet",
@@ -44,5 +45,6 @@
   "delete-cancel-modal": "Cancel",
   "delete-wallet-modal": "Delete anyway",
   "to-transaction-active": "Show transaction",
-  "to-transaction-noneActive": "Hide transaction"
+  "to-transaction-noneActive": "Hide transaction",
+  "loading-transactionFALSE": "Loading..."
 }

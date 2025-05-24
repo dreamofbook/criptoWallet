@@ -23,7 +23,26 @@
     font-size: 32px;
 }
 
-.singForm .password-form{
+.singForm form{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.singForm form .submit-btn{
+    background: #ea5d3e;
+    padding: 10px 20px;
+    border-radius: 15px;
+    transition: 0.2s all ease-in-out;
+    margin-top: 10px;
+}
+
+.singForm form .submit-btn:hover{
+    background: #151515;
+    color: #ececec;
+}
+
+.glassInput{
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(10px);
@@ -38,23 +57,9 @@
     padding: 12px 16px;
     border-radius: 50px;
     transition: 0.2s all ease-in-out;
-    margin: 10px 0;
+    margin: 3px 0;
 }
 
-.singForm form{
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.singForm form .submit-btn{
-    background: #ea5d3e;
-    padding: 10px 20px;
-    border-radius: 15px;
-    transition: 0.2s all ease-in-out;
-}
-
-.singForm form .submit-btn:hover{
-    background: #151515;
-    color: #ececec;
+.glassInput:focus{
+    background: rgba(0, 0, 0, 0.53);
 }

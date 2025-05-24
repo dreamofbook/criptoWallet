@@ -8,7 +8,7 @@ const UseWallets = () => {
 
 	React.useEffect(() => {
 		loadWallets();
-	}, )
+	}, [])
 
 	const loadWallets = async () => {
 		const all = await getAllWallets();

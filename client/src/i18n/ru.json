@@ -26,6 +26,7 @@
   "privateKeyRadio": "Импорт приватного ключа",
   "signWalletTitle": "Вход в кошелек",
   "signPasswordPlaceholder": "Введите пароль",
+  "signAddressPlaceholder": "Введите адрес ETH кошелька",
   "unlock": "Разблокировать",
   "passwordErrorSign": "Неверный пароль или поврежденные данные",
   "noSavedWallet": "Выберете кошелек",
@@ -44,5 +45,6 @@
   "delete-cancel-modal": "Отменить",
   "delete-wallet-modal": "Все равно удалить",
   "to-transaction-active": "Показать транзакции",
-  "to-transaction-noneActive": "Скрыть транзакции"
+  "to-transaction-noneActive": "Скрыть транзакции",
+  "loading-transactionFALSE": "Загрузка..."
 }

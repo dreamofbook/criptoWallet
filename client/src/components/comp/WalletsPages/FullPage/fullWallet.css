@@ -48,16 +48,18 @@
             "wallet tran"
             "buttons tran";
     column-gap: 20px;
+    row-gap: 10px;
 }
 
 .full-wallet-component .wallet-info{grid-area: wallet}
 .full-wallet-component .currency-selector{grid-area: currency}
 .full-wallet-component .tran-sel{grid-area: tran-sel}
-.full-wallet-component .transactions-active{grid-area: tran}
+.full-wallet-component .transactions-active{grid-area: tran; overflow-y: scroll}
 .full-wallet-component .maxi-buttons {grid-area: buttons}
 
 .full-wallet-component .wallet{
     width: 100%;
+    margin: 0;
 }
 
 .full-wallet-component .tran-sel{
@@ -95,3 +97,7 @@
     color: #ea5d3e;
 }
 
+.full-wallet-component .transactions-active .error-message{
+    width: max-content;
+    justify-self: center;
+}

@@ -8,7 +8,8 @@ export async function generateWallet(password) {
 	const mnemonic = bip39.generateMnemonic();
 	const wallet = Wallet.fromPhrase(mnemonic);
 	const encrypted = await encryptWallet(wallet.privateKey, password);
-	return { mnemonic, address: wallet.address, encrypted };
+	const privateKey = wallet.signingKey?.privateKey;
+	return { mnemonic, address: wallet.address, encrypted, privateKey};
 }
 
 export async function importWalletFromMnemonic(mnemonic, password) {
@@ -22,6 +23,7 @@ export async function importWalletFromPrivateKey(privateKey, password) {
 	try {
 		const wallet = new Wallet(privateKey);
 		const encrypted = await encryptWallet(wallet.privateKey, password);
+		console.log(encrypted);
 		return { address: wallet.address, encrypted };
 	} catch (err) {
 		throw new Error('Invalid private key');
@@ -56,6 +58,9 @@ async function encryptWallet(privateKey, password) {
 		key,
 		encoder.encode(privateKey)
 	);
+
+	console.log(encrypted)
+
 	return JSON.stringify({
 		iv: Array.from(iv),
 		salt: Array.from(salt),

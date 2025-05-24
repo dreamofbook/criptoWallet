@@ -32,6 +32,7 @@ export async function saveWalletToDb(address, encrypted, isActive = true) {
 
 export async function getWalletFromDb(address) {
 	const db = await getDb();
+	console.log(db.get(STORE_NAME, address));
 	return await db.get(STORE_NAME, address);
 }
 

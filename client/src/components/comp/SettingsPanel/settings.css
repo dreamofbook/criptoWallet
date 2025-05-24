@@ -86,3 +86,14 @@
 .settings-panel .background img:hover{
     transform: scale(1.05) rotate(15deg);
 }
+
+.settings-panel .settings-active .select-address{
+    width: 100%;
+    margin: 15px 0;
+}
+
+.settings-panel .settings-active .select-address select{
+    color: #ececec;
+    width: 100%;
+    text-align: center;
+}

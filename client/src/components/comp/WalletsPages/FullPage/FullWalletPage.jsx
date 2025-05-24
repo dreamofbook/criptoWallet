@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {formatEther, JsonRpcProvider} from "ethers";
 import copyBtn from "../../../../assets/image/copyButton.svg";
-import {Link} from "react-router";
-import FastButtons from "../fastButtons/FastButtons.jsx";
 import './fullWallet.css'
-import Transaction from "../../WalletDashBoard/Transaction.jsx";
+import TransactionDetails from "./transactions/TransactionDetails.jsx";
+import {getTransactionHistory, setRpcUrl} from "../../../../main-scripts/balanceService.js";
+import SendForm from "./Froms/SendForm.jsx";
 
-
+const ETHERSCAN_API_KEY = 'DIXCF84GWNNBXIWUI33HFBCET1KXC3REH3';
 const CURRENCY_OPTIONS = ['USD', 'EUR', 'RUB', 'KZT', 'CNY'];
 
 const FullWalletPage = ({address, rpcUrl}) => {
@@ -17,6 +17,27 @@ const FullWalletPage = ({address, rpcUrl}) => {
 	const [exchangeRate, setExchangeRate] = useState(null);
 	const [currency, setCurrency] = useState("USD");
 	const [transactionActive, setTransactionActive] = useState(false);
+
+	const [transactions, setTransactions] = useState([]);
+	const [loading, setLoading] = useState(false);
+	React.useEffect( () => {
+		async function loadData() {
+			setLoading(true);
+			try {
+				setRpcUrl(rpcUrl);
+				const txs = await Promise.all([
+					getTransactionHistory(address, ETHERSCAN_API_KEY),
+				]);
+				setTransactions(txs.slice(0, 20));
+			} catch (err) {
+				console.error(err);
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		loadData();
+	}, [transactionActive]);
 
 
 	useEffect(() => {
@@ -74,11 +95,14 @@ const FullWalletPage = ({address, rpcUrl}) => {
 					</div>
 				</div>
 			</div>
-			<FastButtons address={address} isMini={false}/>
+			<SendForm address={address} currency={currency} />
 			<div className="tran-sel">
 				<button
 					className="transaction-select"
-					onClick={() => setTransactionActive(!transactionActive)}
+					onClick={() => {
+						setTransactionActive(!transactionActive)
+						console.log(transactionActive)
+					}}
 				>
 					{transactionActive? (
 							t('to-transaction-noneActive')
@@ -89,9 +113,29 @@ const FullWalletPage = ({address, rpcUrl}) => {
 			</div>
 			<div className="transactions-active">
 				{transactionActive? (
-					<div></div>
+					<div>
+						{loading? (
+							<div className="error-message">
+								{t('loading-transactionFALSE')}
+							</div>
+						) : (
+							<div className="transactions-list">
+								{transactions.map((tx, index) =>
+									<TransactionDetails
+										key={index}
+										from={tx.from}
+										to={tx.to}
+										time={tx.timeStamp}
+										value={tx.value}
+										errorStatus={tx.isError ? '❌' : '✅'}
+									/>
+								)}
+							</div>
+						)}
+					</div>
 				):(
-					<div></div>
+					<div className="transactions-noneactive">
+					</div>
 				)}
 			</div>
 		</div>

@@ -5,13 +5,8 @@
     "path": "/auth-form"
   },
   {
-    "title": "SingNav",
-    "id": 1,
-    "path": "/sign-form"
-  },
-  {
     "title": "WalletsNav",
-    "id": 1,
+    "id": 2,
     "path": "/wallets"
   }
 ]

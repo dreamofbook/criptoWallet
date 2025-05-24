@@ -9,9 +9,11 @@ import './auth.css'
 import {useTranslation} from "react-i18next";
 import { saveWalletToDb } from "../../../main-scripts/walletStorage.js";
 
-const WalletAuthForm = ({ onWalletReady }) => {
+const WalletAuthForm = () => {
 	const [mode, setMode] = useState('generate');
 	const {t} = useTranslation();
+	const [generatedKey, setGeneratedKey] = useState(null);
+
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -21,10 +23,13 @@ const WalletAuthForm = ({ onWalletReady }) => {
 
 			if (mode === 'generate') {
 				result = await generateWallet(password.value);
+				setGeneratedKey(result.privateKey);
+				console.log(result)// ⬅️ сохранить приватный ключ
 			} else if (mode === 'import-mnemonic') {
 				result = await importWalletFromMnemonic(seedPhrase.value.trim(), password.value);
 			} else if (mode === 'import-key') {
 				result = await importWalletFromPrivateKey(privateKey.value.trim(), password.value);
+				console.log(result);
 			}
 
 			// localStorage.setItem('wallet', JSON.stringify([{
@@ -39,8 +44,7 @@ const WalletAuthForm = ({ onWalletReady }) => {
 
 			await saveWalletToDb(result.address, result.encrypted, true);
 
-			onWalletReady(result.address);
-			alert(`Кошелёк добавлен: ${result.address}`);
+			alert(`Кошелёк добавлен: ${result.address}\n${generatedKey}`);
 
 		} catch (err) {
 			console.error(err);

@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './fastBtn.css'
-import sendImage from '../../../../assets/image/ArrowSend.svg'
-import deleteImage from '../../../../assets/image/deleteWalletBtn.svg'
-import swapImage from '../../../../assets/image/swapBtn.svg'
-import {Link} from "react-router";
-import {deleteWalletFromDb} from "../../../../main-scripts/walletStorage.js";
+import sendImage from '../../../../../assets/image/ArrowSend.svg'
+import deleteImage from '../../../../../assets/image/deleteWalletBtn.svg'
+import swapImage from '../../../../../assets/image/swapBtn.svg'
+import {deleteWalletFromDb} from "../../../../../main-scripts/walletStorage.js";
 import Modal from "react-modal";
 import DeleteModal from "./DeleteModal/deleteModal.jsx";
 
@@ -25,26 +24,26 @@ const FastButtons = ({address, isMini}) => {
 			{isMini ? (
 				<div className="fast-buttons">
 					<div className="send btn">
-						<Link to={''}>
+						<a>
 							<img src={sendImage} alt="" />
 							Send
-						</Link>
+						</a>
 					</div>
 					<div className="swap btn">
-						<Link to={''}>
+						<a>
 							<img src={swapImage} alt="" />
 							Swap
-						</Link>
+						</a>
 					</div>
 					<div className="delete btn">
-						<Link to={''}
+						<a
 							onClick={() => {
 								setModalIsOpen(true)
 							}}
 						>
 							<img src={deleteImage} alt="" />
 							Delete
-						</Link>
+						</a>
 					</div>
 					<DeleteModal
 						modalIsOpen={modalIsOpen}
@@ -53,8 +52,19 @@ const FastButtons = ({address, isMini}) => {
 					/>
 				</div>
 			) : (
-				<div className={'maxi-buttons'} style={{width:'max-content'}}>
-					gbcmrfds
+				<div className={'maxi-buttons'}>
+					<div className="send btn">
+						<a>
+							<img src={sendImage} alt="" />
+							Send
+						</a>
+					</div>
+					<div className="swap btn">
+						<a>
+							<img src={swapImage} alt="" />
+							Swap
+						</a>
+					</div>
 				</div>
 			)}
 		</>

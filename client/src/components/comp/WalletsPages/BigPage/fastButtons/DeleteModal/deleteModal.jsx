@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Modal from "react-modal";
 import './deleteModal.css'
 import {useTranslation} from "react-i18next";
-import {deleteWalletFromDb} from "../../../../../main-scripts/walletStorage.js";
+import {deleteWalletFromDb} from "../../../../../../main-scripts/walletStorage.js";
 
 const DeleteModal = ({modalIsOpen,setModalIsOpen,setDeleteFinally}) => {
 

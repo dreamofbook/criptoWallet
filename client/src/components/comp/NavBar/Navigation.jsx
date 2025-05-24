@@ -5,9 +5,6 @@ import arr from'./arr.json'
 
 const Navigation = () => {
 
-	const [inNav, setInNav] = useState(null);
-	const [active, setActive] = useState(0);
-
 	return (
 		<div className={'navigation'}>
 			<div className="NavBar">

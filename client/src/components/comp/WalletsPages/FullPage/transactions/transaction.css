@@ -1,7 +1,6 @@
 .transaction {
-    margin: 30px 0;
+    margin-bottom: 10px;
     justify-items: center;
-
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(10px);

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './wallets.css'
-import {getAllWallets} from "../../../main-scripts/walletStorage.js";
+import {getAllWallets} from "../../../../main-scripts/walletStorage.js";
 import WalletMini from './Wallet/Wallet-mini.jsx'
 import CurrencyGraph from "./Canvas/CurrencyGraph.jsx";
 import {useTranslation} from "react-i18next";
@@ -15,7 +15,7 @@ const Wallets = ({rpcUrl}) => {
 
 	useEffect(() => {
 		loadWallets();
-	}, );
+	}, []);
 
 	const loadWallets = async () => {
 		const all = await getAllWallets();
