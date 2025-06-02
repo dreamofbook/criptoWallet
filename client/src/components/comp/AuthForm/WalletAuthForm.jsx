@@ -24,23 +24,11 @@ const WalletAuthForm = () => {
 			if (mode === 'generate') {
 				result = await generateWallet(password.value);
 				setGeneratedKey(result.privateKey);
-				console.log(result)// ⬅️ сохранить приватный ключ
 			} else if (mode === 'import-mnemonic') {
 				result = await importWalletFromMnemonic(seedPhrase.value.trim(), password.value);
 			} else if (mode === 'import-key') {
 				result = await importWalletFromPrivateKey(privateKey.value.trim(), password.value);
-				console.log(result);
 			}
-
-			// localStorage.setItem('wallet', JSON.stringify([{
-			// 	address: result.address,
-			// 	encrypted: result.encrypted
-			// 	},{
-			//
-			// }
-			// ]));
-			//
-			// onWalletReady(result.address);
 
 			await saveWalletToDb(result.address, result.encrypted, true);
 
@@ -146,7 +134,17 @@ const WalletAuthForm = () => {
 					<button
 						className={'submit-btn'}
 						type="submit"
-						disabled={!(password.isInputValid && seedPhrase.isInputValid)}
+						// disabled={
+						// 	mode === 'generate' ? password.isInputValid :
+						// 	mode === 'import-key' ? password.isInputValid && privateKey.isInputValid :
+						// 	password.isInputValid && seedPhrase.isInputValid
+						// }
+						disabled={
+							(mode === 'generate' && !password.isInputValid) ||
+							(mode === 'import-mnemonic' && !(password.isInputValid && seedPhrase.isInputValid)) ||
+							(mode === 'import-key' && !(password.isInputValid && privateKey.isInputValid))
+						}
+						onClick={() => console.log(password.value)}
 					>{t('continue')}</button>
 				</form>
 			</div>

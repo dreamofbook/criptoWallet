@@ -6,7 +6,11 @@
     width: 100%;
 }
 
-.wallets-box .currency-selector{
+.wallets-box .selectors {
+    display: flex;
+}
+
+.wallets-box .selectors .currency-selector{
     font-family: "SF Pro Display Bold", sans-serif;
     width: 82.1%;
     height: 40px;
@@ -28,21 +32,21 @@
     margin: 3px 0;
 }
 
-.wallets-box .currency-selector:hover,
-.wallets-box .currency-selector:active,
-.wallets-box .currency-selector:focus {
+.wallets-box .selectors .currency-selector:hover,
+.wallets-box .selectors .currency-selector:active,
+.wallets-box .selectors .currency-selector:focus {
     background: rgba(0, 0, 0, 0.53);
 }
 
-.wallets-box .currency-selector select{
+.wallets-box .selectors .currency-selector select{
     width: 95%;
     height: 100%;
     text-align: center;
 }
 
-.wallets-box .currency-selector select:hover,
-.wallets-box .currency-selector select:active,
-.wallets-box .currency-selector select:focus{
+.wallets-box .selectors .currency-selector select:hover,
+.wallets-box .selectors .currency-selector select:active,
+.wallets-box .selectors .currency-selector select:focus{
     outline: none;
 }
 

@@ -8,78 +8,81 @@ const PORT = 3001;
 
 app.use(cors());
 
+const allowedTokens = [
+	"USDT", "USDC", "DAI", "WETH", "LINK",
+	"UNI", "AAVE", "MKR", "COMP", "MATIC"
+];
 
-// ===========================
-// 🚀 Новый маршрут: /api/eth-full
-// ===========================
-
-const supportedSymbols = {
-	usd: 'ETHUSDT',
-	eur: 'ETHEUR',
-	rub: 'ETHRUB',
-	kzt: 'ETHKZT'
-};
-
-let cachedFullDataByCurrency = {};
-let lastFetchByCurrency = {};
+let cachedFullDataByPair = {};
+let lastFetchByPair = {};
 
 app.get('/api/eth-full', async (req, res) => {
+	const base = (req.query.base || "ETH").toUpperCase();
+	const quote = (req.query.quote || "USDT").toUpperCase();
 
-	const currency = (req.query.currency || 'usd').toLowerCase();
-	const symbol = supportedSymbols[currency];
-
-	if (!symbol) {
-		return res.status(400).json({ error: `Unsupported currency: ${currency}` });
-	}
-
+	const symbol = `${base}${quote}`;
+	const reverseSymbol = `${quote}${base}`;
 	const now = Date.now();
-	const cacheTTL = 60 * 1000; // 1 минутф кэш
+	const cacheTTL = 60 * 1000;
 
-	if (cachedFullDataByCurrency[currency] &&
-		now - lastFetchByCurrency[currency] < cacheTTL) {
-		return res.json(cachedFullDataByCurrency[currency]);
+	if (
+		cachedFullDataByPair[symbol] &&
+		now - lastFetchByPair[symbol] < cacheTTL
+	) {
+		return res.json(cachedFullDataByPair[symbol]);
 	}
 
 	try {
-		// 1. Получаем график
 		const klineRes = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=5m&limit=288`);
-		if (!klineRes.ok) throw new Error('Failed to fetch klines');
+		if (!klineRes.ok) throw new Error("Ошибка запроса Kline данных");
 		const klineData = await klineRes.json();
 
 		const chart = klineData.map(kline => ({
-			x: kline[0], // timestamp (open time)
-			y: parseFloat(kline[4]) // close price
+			x: kline[0],
+			y: parseFloat(kline[4])
 		}));
 
-		// 2. Получаем текущую цену
 		const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`);
-		if (!tickerRes.ok) throw new Error('Failed to fetch ticker');
+		if (!tickerRes.ok) throw new Error("Ошибка запроса текущей цены");
 		const tickerData = await tickerRes.json();
-		const lastPrice = parseFloat(tickerData.price);
-
-		// 3. Добавляем финальную точку
-		chart.push({
-			x: Date.now(),
-			y: lastPrice
-		});
 
 		const result = {
-			// symbol: 'ETHUSDT',
-			// lastPrice,
-			// chart
-			symbol,
-			currency,
-			lastPrice,
+			base,
+			quote,
+			lastPrice: parseFloat(tickerData.price),
 			chart
 		};
 
-		cachedFullDataByCurrency[currency] = result;
-		lastFetchByCurrency[currency] = now;
+		cachedFullDataByPair[symbol] = result;
+		lastFetchByPair[symbol] = now;
 
-		res.json(result);
+		return res.json(result);
 	} catch (err) {
-		console.error('❌ /api/eth-full error:', err.message);
-		res.status(500).json({ error: 'Failed to fetch full ETH data' });
+		console.warn(err.message);
+		const klineRes = await fetch(`https://api.binance.com/api/v3/klines?symbol=${reverseSymbol}&interval=5m&limit=288`);
+		if (!klineRes.ok) throw new Error("Ошибка запроса Kline данных");
+		const klineData = await klineRes.json();
+
+		const chart = klineData.map(kline => ({
+			x: kline[0],
+			y: parseFloat(kline[4])
+		}));
+
+		const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${reverseSymbol}`);
+		if (!tickerRes.ok) throw new Error("Ошибка запроса текущей цены");
+		const tickerData = await tickerRes.json();
+
+		const result = {
+			base,
+			quote,
+			lastPrice: parseFloat(tickerData.price),
+			chart
+		};
+
+		cachedFullDataByPair[symbol] = result;
+		lastFetchByPair[symbol] = now;
+
+		return res.json(result);
 	}
 });
 

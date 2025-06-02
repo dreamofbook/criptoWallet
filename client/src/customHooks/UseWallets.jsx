@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {getAllWallets} from "../main-scripts/walletStorage.js";
 
 const UseWallets = () => {
@@ -7,24 +7,20 @@ const UseWallets = () => {
 	const [wallets, setWallets] = useState([]);
 
 	React.useEffect(() => {
+		const loadWallets = async () => {
+			const all = await getAllWallets();
+			setWallets(all);
+			setWalletsLoaded(true);
+		};
 		loadWallets();
-	}, [])
+	}, []);
 
-	const loadWallets = async () => {
-		const all = await getAllWallets();
-		setWallets(() => {
-			const arr = [];
-			all.forEach(wallets => {
-				arr.push(wallets.address)
-			})
-			return arr;
-		});
-		setWalletsLoaded(true);
-	};
+	const res = useMemo(() => ({
+		wallets,
+		walletsLoaded
+	}), [wallets, walletsLoaded]);
 
-	return {
-		wallets, walletsLoaded
-	}
+	return res;
 };
 
 export default UseWallets;

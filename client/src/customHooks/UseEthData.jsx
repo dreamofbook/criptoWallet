@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useEthData = (currency = 'usd', refreshInterval = 15000) => {
+const useEthData = (base, quote, refreshInterval = 60000) => {
 	const [chart, setChart] = useState([]);
 	const [price, setPrice] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -9,8 +9,7 @@ const useEthData = (currency = 'usd', refreshInterval = 15000) => {
 	const fetchData = async () => {
 		try {
 			setLoading(true);
-			const fiat = (currency || 'usd').toLowerCase();
-			const res = await fetch(`http://localhost:3001/api/eth-full?currency=${fiat}`);
+			const res = await fetch(`http://localhost:3001/api/eth-full?base=${base}&quote=${quote}`);
 
 			if (!res.ok) throw new Error(`Ошибка API: ${res.status}`);
 			const data = await res.json();
@@ -31,7 +30,7 @@ const useEthData = (currency = 'usd', refreshInterval = 15000) => {
 		fetchData();
 		const interval = setInterval(fetchData, refreshInterval);
 		return () => clearInterval(interval);
-	}, [currency, refreshInterval]);
+	}, [base, quote, refreshInterval]);
 
 	return {
 		chart,

@@ -1,43 +1,29 @@
 import React, {useState} from 'react';
-import UseInput from "./UseInput.jsx";
+import {useTokenPrices} from "./UseTokenPrices.jsx";
 
-const UseCurrencyInput = (firstValue, secondValue, ethBalance, exchangeRate) => {
+const UseCurrencyInput = (firstValue, secondValue, selectedToken) => {
 
-	const [isDirtyFirst, setIsDirtyFirst] = useState(false);
-	const [isDirtySecond, setIsDirtySecond] = useState(false);
 	const [currencyETH, setCurrencyETH] = useState(firstValue);
 	const [currencyRate, setCurrencyRate] = useState(secondValue);
-	const [isEmptyFirst, setIsEmptyFirst] = useState(false);
-	const [isEmptySecond, setIsEmptySecond] = useState(false);
 
-	const [active, setActive] = useState(null);
+	const {prices} = useTokenPrices();
+	const isPricesEmpty = Object.keys(prices).length === 0;
+	const exchangeRate = !isPricesEmpty && prices[selectedToken]?.price;
 
 	const onChangeFirst = (e) => {
 		const value = e.target.value;
-		setCurrencyRate(value * exchangeRate);
+		setCurrencyRate(exchangeRate? value * exchangeRate : null);
 		setCurrencyETH(value);
-		value? setIsEmptyFirst(true) : setIsDirtyFirst(false);
 	}
 
 	const onChangeSecond = (e) => {
 		const value = e.target.value;
 		setCurrencyRate(value);
-		setCurrencyETH(value / exchangeRate);
-		value? setIsEmptySecond(true) : setIsDirtySecond(false);
+		setCurrencyETH(exchangeRate? value / exchangeRate : null);
 	}
-
-	const onBlurFirst = () => {
-		setIsDirtyFirst(true);
-	}
-
-	const onBlurSecond = () => {
-		setIsDirtySecond(true);
-	}
-
-
 
 	return {
-		currencyETH, currencyRate, onChangeFirst, onChangeSecond, onBlurFirst, onBlurSecond,
+		currencyETH, currencyRate, onChangeFirst, onChangeSecond
 	};
 };
 

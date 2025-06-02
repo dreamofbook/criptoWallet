@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Kalnia:wght@100..700&display=swap');
 
 .logo {
-    font-family: "Kalnia", sans-serif;
-    color: white;
+    /*font-family: "Kalnia", sans-serif;*/
+    font-family: "SF Pro Display Bold", sans-serif;
+    color: #ececec;
     font-weight: bold;
     font-size: 50px;
     transition: 0.3s all ease-in-out;

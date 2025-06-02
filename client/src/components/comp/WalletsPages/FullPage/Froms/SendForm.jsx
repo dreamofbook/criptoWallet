@@ -5,54 +5,81 @@ import sendImage from "../../../../../assets/image/ArrowSend.svg";
 import {useTranslation} from "react-i18next";
 import CurrencyForm from "./CurrencyForm.jsx";
 import downArrow from "../../../../../assets/image/downArrow.svg";
-import {sendEthTransactionFromStorage} from "../../../../../main-scripts/sendScripts.js";
+import {sendAssetFromStorage} from "../../../../../main-scripts/sendScripts.js";
 import UseCurrencyInput from "../../../../../customHooks/UseCurrencyInput.jsx";
 import ErrorSendModal from "./ErrorSend/ErrorSendModal.jsx";
+import {verifyWalletPassword} from "../../../../../main-scripts/verifyWalletPassword.js";
 
-const SendForm = ({address, currency, ethBalance, exchangeRate}) => {
+const SendForm = ({fromAddress, rpcUrl, tokens}) => {
 
-	const secondAddress = UseInput('', {isEmpty: false, isEthError: false});
 	const {t} = useTranslation();
-	const password = UseInput('', {isEmpty: false});
 	const [error, setError] = useState('');
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [isFromValid, setIsFromValid] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [status, setStatus] = useState(null);
+	const [selectedTokenSymbol, setSelectedTokenSymbol] = useState("ETH");
+	const [selectedTokenAddress, setSelectedTokenAddress] = useState("");
 
-	const currencies = UseCurrencyInput('', '', ethBalance, exchangeRate, currency);
+	const secondAddress = UseInput('', {isEmpty: false, isEthError: false});
+	const password = UseInput('', {isEmpty: false});
+	const currencies = UseCurrencyInput('', '', selectedTokenSymbol);
 
-	const handlerSend = async () => {
-		if (isFromValid) {
-			setError('')
-		} else if (!isFromValid){
-
+	const handlerSend = async (e) => {
+		if (!isFromValid) {
 			setError(secondAddress.errorMessage ?
-				secondAddress.errorMessage === "Это поле не может быть пустым" ?
-					"Введите адрес кошелька-получателя" : secondAddress.errorMessage
-				:
-				`Введите пароль от кошелька-отправителя:\n${address}`)
-		} else {
-			if (ethBalance) {
-				setError(t('balanceErrorNull'))
-			} else if (ethBalance >= currencies.currencyETH){
-				setError(t('balanceErrorToMuch'))
-			}
+				secondAddress.errorMessage === 'Это поле не может быть пустым'
+					? "Введите адрес кошелька-получателя"
+					: secondAddress.errorMessage
+				: `Введите пароль от кошелька-отправителя:\n${fromAddress}`);
+			setModalIsOpen(true);
+			// return;
 		}
-		setModalIsOpen(true);
-	}
 
-	React.useEffect(() => {
-		setIsFromValid(
-			password.isInputValid && secondAddress.isInputValid
-			&& ethBalance >= currencies.currencyETH && ethBalance
-		)
-	}, [currencies.currencyETH, currencies.currencyRate, password, secondAddress]);
+		e.preventDefault();
+		setLoading(true);
+		setStatus(null);
+
+		try {
+			// ✅ Проверка пароля перед отправкой
+			const isValidPassword = await verifyWalletPassword(fromAddress, password.value);
+			if (!isValidPassword) {
+				setError("❌ Неверный пароль");
+				setModalIsOpen(true);
+				setLoading(false);
+				return;
+			} else {
+				console.log("Пароль верен все кайф");
+			}
+
+			const tokenInfo = tokens.find(t => t.symbol === selectedTokenSymbol);
+			const tokenAddress = tokenInfo?.address || null;
+
+			const txHash = await sendAssetFromStorage({
+				fromAddress,
+				password: password.value,
+				toAddress: secondAddress.value,
+				amount: currencies.currencyETH,
+				rpcUrl,
+				tokenAddress
+			});
+
+			setStatus(`✅ Успешно отправлено! TX Hash: ${txHash}`);
+			setModalIsOpen(true);
+		} catch (err) {
+			setStatus(`❌ Ошибка: ${err.message}`);
+			setModalIsOpen(true);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<div className="send-box">
 			<div className={'send-form glass'}>
 				<input
 					className={'send-from glassInput'}
-					value={address}
+					value={fromAddress}
 					disabled={true}
 					size={51}
 				/>
@@ -66,7 +93,13 @@ const SendForm = ({address, currency, ethBalance, exchangeRate}) => {
 					onBlur={() => secondAddress.onBlur()}
 					size={51}
 				/>
-				<CurrencyForm currency={currency} ethBalance={ethBalance} exchangeRate={exchangeRate} currencies={currencies}/>
+				<CurrencyForm
+					currencies={currencies}
+					tokens={tokens}
+					setSelectedTokenSymbol={setSelectedTokenSymbol}
+					setSelectedTokenAddress={setSelectedTokenAddress}
+					selectedTokenAddress={selectedTokenAddress}
+				/>
 				<div className={'password-form'}>
 					{password.errorMessage && <p className={"error-message"}>{password.errorMessage}</p>}
 					<input
@@ -79,13 +112,25 @@ const SendForm = ({address, currency, ethBalance, exchangeRate}) => {
 						size={51}
 					/>
 				</div>
+				{status && <p className={'status-message'}>{status}</p>}
 			</div>
-			<div className="send" onClick={() => handlerSend()}>
-				<a>
-					<img src={sendImage} alt="" />
-					Send
-				</a>
-			</div>
+			<button
+				className="send"
+				onClick={(e) => handlerSend(e)}
+				disabled={loading}
+			>
+				{loading? (
+					<a>
+						<img src={sendImage} alt="" />
+						Sending...
+					</a>
+				) : (
+					<a>
+						<img src={sendImage} alt="" />
+						Send
+					</a>
+				)}
+			</button>
 			<ErrorSendModal
 				error={error}
 				setError={setError}

@@ -36,7 +36,7 @@
   "WalletsNav": "Wallets",
   "toWallet-btn": "Read more",
   "currency-value": "Currency rate",
-  "finally-amount": "Cost",
+  "finally-amount": "Total price",
   "balance-value": "Balance",
   "wallet-address": "Wallet address",
   "wallets-error-import": " create ",
@@ -50,5 +50,8 @@
   "sendToPlaceholder": "Enter the ETH address of the recipient",
   "balanceErrorToMuch": "Insufficient funds",
   "balanceErrorNull": "Unable to send 0 ETH",
-  "SendError": "Transaction sending error"
+  "SendError": "Transaction sending error",
+  "tokenSelectorLabel": "Select a token",
+  "atThisRatePhrase": "Rate",
+  "amountTokenPrice" : "Amount of token value"
 }

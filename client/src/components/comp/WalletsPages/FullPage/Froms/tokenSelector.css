@@ -1,0 +1,53 @@
+.token-selector{
+    width: 100%;
+    color: #ececec;
+    justify-items: center;
+}
+
+.token-selector label {
+    font-family: 'SF Pro Display Medium', sans-serif;
+    color: #ececec;
+    font-size: 16px;
+    width: max-content;
+}
+
+.token-selector .tokens {
+    font-family: "SF Pro Display Bold", sans-serif;
+    width: 100%;
+    height: 40px;
+    content: none;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.44);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+            inset -0.75px -0.5px rgba(255, 255, 255, 0.1),
+            inset +0.75px +0.5px rgba(255, 255, 255, 0.025),
+            inset 3px 2px 15px rgba(0, 0, 0, 0.25),
+            inset 0 0 10px 5px rgba(255, 255, 255, 0.025),
+            inset 0 0 40px 5px rgba(255, 255, 255, 0.025);
+    color: #ececec;
+    border: none;
+    border-radius: 50px;
+    transition: 0.2s all ease-in-out;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.token-selector .tokens select {
+    width: 95%;
+    height: 100%;
+    text-align: center;
+}
+
+.token-selector .tokens:hover,
+.token-selector .tokens:active,
+.token-selector .tokens:focus {
+    background: rgba(0, 0, 0, 0.68);
+}
+
+.token-selector .tokens select:hover,
+.token-selector .tokens select:active,
+.token-selector .tokens select:focus{
+    outline: none;
+}

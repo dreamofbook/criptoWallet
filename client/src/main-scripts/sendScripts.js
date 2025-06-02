@@ -1,55 +1,56 @@
 import { ethers } from 'ethers';
 import { getWalletFromDb } from './walletStorage.js';
 import { decryptWallet } from './walletUtils.js';
+import { sendToken, getTokenContract } from '../../../server/scripts/erc20Service.js';
 
 /**
- * Отправляет ETH с кошелька, зашифрованного в IndexedDB.
+ * Отправляет ETH или токен с зашифрованного кошелька.
  *
- * @param {string} fromAddress - Адрес отправителя (ключ к walletStorage)
- * @param {string} password - Пароль для расшифровки приватного ключа
- * @param {string} toAddress - Адрес получателя
- * @param {string|number} amountEth - Сумма в ETH
- * @param {string} rpcUrl - RPC-URL (например, Infura, Alchemy, Ganache)
- * @returns {Promise<string>} - Хэш транзакции
+ * @param {object} params
+ * @param {string} params.fromAddress
+ * @param {string} params.password
+ * @param {string} params.toAddress
+ * @param {string|number} params.amount
+ * @param {string} params.rpcUrl
+ * @param {string|null} [params.tokenAddress] — если null, отправляем ETH; если указан, отправляем токен
+ * @returns {Promise<string>} — Хэш транзакции
  */
-export async function sendEthTransactionFromStorage(fromAddress, password, toAddress, amountEth, rpcUrl) {
+export async function sendAssetFromStorage({ fromAddress, password, toAddress, amount, rpcUrl, tokenAddress = null }) {
 	try {
-		// 1. Получаем зашифрованный ключ из IndexedDB
-		const walletData = await getWalletFromDb(fromAddress.toLowerCase());
+		const walletData = await getWalletFromDb(fromAddress);
+		if (!walletData) throw new Error('Кошелёк не найден в хранилище');
 
-		if (!walletData) {
-			throw new Error('Кошелёк не найден в хранилище');
-		}
-
-		// 2. Расшифровываем приватный ключ
 		const decryptedPrivateKey = await decryptWallet(walletData.encrypted, password);
+		console.log(decryptedPrivateKey);
+		if (!/^0x[a-fA-F0-9]{64}$/.test(decryptedPrivateKey)) throw new Error('Неверный пароль или повреждённый ключ');
 
-		if (!/^0x[a-fA-F0-9]{64}$/.test(decryptedPrivateKey)) {
-			throw new Error('Неверный пароль или повреждённый ключ');
-		}
-
-		// 3. Инициализируем кошелёк и провайдер
 		const provider = new ethers.JsonRpcProvider(rpcUrl);
 		const wallet = new ethers.Wallet(decryptedPrivateKey, provider);
 
-		// 4. Готовим и отправляем транзакцию
-		const tx = {
-			to: toAddress,
-			value: ethers.parseEther(amountEth.toString()),
-			gasLimit: 21000,
-			maxFeePerGas: ethers.parseUnits('50', 'gwei'),
-			maxPriorityFeePerGas: ethers.parseUnits('2', 'gwei'),
-		};
+		if (!amount || isNaN(amount)) {
+			throw new Error("Сумма не указана или некорректна");
+		}
 
-		const txResponse = await wallet.sendTransaction(tx);
-		console.log('⏳ Транзакция отправлена:', txResponse.hash);
+		if (tokenAddress === null) {
+			// Отправка ETH
+			const tx = {
+				to: toAddress,
+				value: ethers.parseEther(amount.toString()),
+				gasLimit: 21000,
+				maxFeePerGas: ethers.parseUnits('50', 'gwei'),
+				maxPriorityFeePerGas: ethers.parseUnits('2', 'gwei'),
+			};
+			const txResponse = await wallet.sendTransaction(tx);
+			const receipt = await txResponse.wait();
+			return txResponse.hash;
+		} else {
+			// Отправка ERC-20 токена
+			const txReceipt = await sendToken(tokenAddress, toAddress, amount, wallet);
+			return txReceipt.hash;
+		}
 
-		const receipt = await txResponse.wait();
-		console.log('✅ Подтверждена в блоке:', receipt.blockNumber);
-
-		return txResponse.hash;
 	} catch (err) {
-		console.error('❌ Ошибка при отправке:', err.message);
+		console.error('❌ Ошибка при отправке актива:', err.message);
 		throw err;
 	}
 }

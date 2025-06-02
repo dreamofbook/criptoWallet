@@ -1,13 +1,18 @@
 .currency-box {
     margin-top: 10px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     width: 100%;
 }
 
-.currency-box input {
+.currency-box .currency-inputs{
+    display: flex;
+    justify-content: space-between;
+}
+
+.currency-box .currency-inputs input {
     width: 48%;
-    background: rgba(0, 0, 0, 0.37);
+    background: rgba(0, 0, 0, 0.44);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow:
@@ -23,7 +28,12 @@
     transition: 0.2s all ease-in-out;
 }
 
-.currency-box input::-webkit-outer-spin-button,
-.currency-box input::-webkit-inner-spin-button {
+.currency-box .currency-inputs input:focus,
+.currency-box .currency-inputs input:active {
+    background: rgba(0, 0, 0, 0.68);
+}
+
+.currency-box .currency-inputs input::-webkit-outer-spin-button,
+.currency-box .currency-inputs input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }

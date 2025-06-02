@@ -15,7 +15,7 @@ const SettingsPanel = ({ onRpcChange, wallets }) => {
 	const handleRpcChange = (e) => {
 		const value = e.target.value;
 		setRpc(value);
-		localStorage.setItem('rpcUrl', value);
+		// localStorage.setItem('rpcUrl', value);
 		onRpcChange(value);
 	};
 	const handleSettings = (e) => {
@@ -44,8 +44,6 @@ const SettingsPanel = ({ onRpcChange, wallets }) => {
 
 	const location = useLocation();
 
-
-
 	return (
 		<>
 			<div className="settings-panel">
@@ -59,7 +57,11 @@ const SettingsPanel = ({ onRpcChange, wallets }) => {
 						<div className="glass">
 							<h3>{t('settings')}</h3>
 							<div className="selection-box">
-								<select value={rpc} onChange={(e) => handleRpcChange(e)}>
+								<select
+									value={rpc}
+								    onChange={(e) => handleRpcChange(e)}
+									defaultValue={'https://mainnet.infura.io/v3/4b2945248a5b4c7298d0323b52ceed8b'}
+								>
 									<option value={'https://mainnet.infura.io/v3/4b2945248a5b4c7298d0323b52ceed8b'}>Infura</option>
 									<option>{t('selectRpc')}</option>
 								</select>
@@ -71,7 +73,7 @@ const SettingsPanel = ({ onRpcChange, wallets }) => {
 										navigate(`/wallets/fullpage/${e.target.value}`);
 									}}>
 										{wallets.map((wallet, index) =>
-											<option key={index} value={wallet}>{wallet}</option>
+											<option key={index} value={wallet.address}>{wallet.address}</option>
 										)}
 									</select>
 								</div>

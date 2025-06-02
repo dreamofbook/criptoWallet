@@ -118,3 +118,8 @@
 .send-box .send-form .password-form {
     justify-items: center;
 }
+
+.send-box .send-form .status-message{
+    color: #ececec;
+    margin-top: 30px;
+}
